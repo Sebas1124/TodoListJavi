@@ -1,5 +1,3 @@
-
-
 // QUE ES UN CRUD
 // C = Create
 // R = Read // SHOW // MOSTRAR
@@ -9,226 +7,269 @@
 // TODO LIST APP
 
 // DEFINIR VARIABLES GLOBALES
-const input     = document.getElementById('task');
-const buttonAdd = document.getElementById('btnAdd');
-const listApp   = document.getElementById('list');
+const input = document.getElementById("task");
+const buttonAdd = document.getElementById("btnAdd");
+const listApp = document.getElementById("list");
 
 let tasks = [];
 
 // Evento
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
+  let tasks = localStorage.getItem("tareas");
 
-    let tasks = localStorage.getItem('tareas');
+  if (tasks) {
+    tasks = tasks.split(",");
 
-    if( tasks ){
-
-        tasks = tasks.split(',');
-
-        tasks.forEach( task => {
-            
-            addTask(task);
-
-        });
-
-    }
-
+    tasks.forEach((task) => {
+      addTask(task);
+    });
+  }
 });
 
 // FUNCIONES
 
-const addTask = ( valueInput ) => {
+const addTask = (valueInput) => {
+  const task = valueInput;
 
-    const task = valueInput;
+  if (task === "") {
+    alert("Ingresa una tarea correcta");
+    return;
+  }
 
-    if( task === '' ){
-        alert('Ingresa una tarea correcta')
-        return;
+  // crear elementos li
+
+  const li = document.createElement("li");
+  li.style.listStyle = "none";
+  li.style.display = "flex";
+  li.style.justifyContent = "space-between";
+  li.style.marginBottom = "10px";
+
+  const title = document.createElement("h3");
+  title.textContent = task;
+  title.classList.add("text-center");
+
+  const div = document.createElement("div");
+  div.style.display = "flex";
+  div.style.gap = "10px";
+
+  // crear boton eliminar
+  const btnDelete = document.createElement("button");
+  btnDelete.textContent = "Eliminar";
+  btnDelete.classList.add("btn");
+  btnDelete.classList.add("btn-outline-danger");
+
+  // agregar boton de actualizar
+  const btnUpdate = document.createElement("button");
+  btnUpdate.textContent = "Actualizar";
+  btnUpdate.classList.add("btn");
+  btnUpdate.classList.add("btn-outline-warning");
+
+  // boton de detalles de la tarea
+  const btnDetails = document.createElement("button");
+  btnDetails.textContent = "Detalles";
+  btnDetails.classList.add("btn");
+  btnDetails.classList.add("btn-outline-primary");
+  btnDetails.setAttribute("data-bs-toggle", "modal");
+  btnDetails.setAttribute("data-bs-target", `detalleModal_${task}`);
+
+  // Eventos
+
+  btnDelete.addEventListener("click", () => {
+    li.remove();
+
+    // eliminar de LocalStorage
+
+    const taskToDelete = task;
+
+    tasks = tasks.filter((tarea) => tarea !== taskToDelete);
+
+    localStorage.setItem("tareas", tasks);
+  });
+
+  btnUpdate.addEventListener("click", () => {
+    const newTask = prompt(`Ingrese la actualizacio de la tarea ${task}`);
+
+    if (newTask === "") {
+      alert("Ingresa un valor correcto");
+      return;
     }
 
-    // crear elementos li
+    // actualizar en LocalStorage
 
-    const li = document.createElement('li');
-    li.style.listStyle = 'none';
-    li.style.display = 'flex';
-    li.style.justifyContent = 'space-between';
-    li.style.marginBottom = '10px';
+    const taskToUpdate = task;
 
-    const title = document.createElement('h3');
-    title.textContent = task;
-    title.classList.add('text-center');
+    tasks = tasks.map((tarea) => (tarea === taskToUpdate ? newTask : tarea));
 
-    const div = document.createElement('div');
-    div.style.display = 'flex';
-    div.style.gap = '10px';
+    localStorage.setItem("tareas", tasks);
 
-    // crear boton eliminar
-    const btnDelete = document.createElement('button');
-    btnDelete.textContent = 'Eliminar';
-    btnDelete.classList.add('btn');
-    btnDelete.classList.add('btn-outline-danger');
+    title.textContent = newTask;
+  });
 
-    // agregar boton de actualizar
-    const btnUpdate = document.createElement('button');
-    btnUpdate.textContent = 'Actualizar';
-    btnUpdate.classList.add('btn');
-    btnUpdate.classList.add('btn-outline-warning');
+  btnDetails.addEventListener("click", () => {
+    // crear modal con detalles de la tarea
 
-    // boton de detalles de la tarea
-    const btnDetails = document.createElement('button');
-    btnDetails.textContent = 'Detalles';
-    btnDetails.classList.add('btn');
-    btnDetails.classList.add('btn-outline-primary');
-    btnDetails.setAttribute('data-bs-toggle', 'modal');
-    btnDetails.setAttribute('data-bs-target', `detalleModal_${task}`);
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+    modal.classList.add("fade");
+    modal.setAttribute("tabindex", "-1");
+    modal.setAttribute("id", `detalleModal_${task}`);
 
-    // Eventos
+    const modalDialog = document.createElement("div");
+    modalDialog.classList.add("modal-dialog");
 
-    btnDelete.addEventListener('click', () => {
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
 
-        li.remove();
+    const modalHeader = document.createElement("div");
+    modalHeader.classList.add("modal-header");
+    modalHeader.classList.add("d-flex");
+    modalHeader.classList.add("justify-content-between");
 
-        // eliminar de LocalStorage
+    const modalTitle = document.createElement("h5");
+    modalTitle.textContent = `Detalles de la tarea ${task}`;
 
-        const taskToDelete = task;
+    const closeModal = document.createElement("button");
+    closeModal.textContent = "Cerrar";
+    closeModal.classList.add("btn");
+    closeModal.classList.add("btn-danger");
 
-        tasks = tasks.filter( tarea => tarea !== taskToDelete );
+    const modalBody = document.createElement("div");
+    modalBody.classList.add("modal-body");
+    modalBody.style.display = "flex";
+    modalBody.style.flexDirection = "column";
+    modalBody.style.justifyContent = "space-evenly";
 
-        localStorage.setItem('tareas', tasks);
+    const labelhoraI = document.createElement("label");
+    labelhoraI.textContent = "INICIO TAREA";
+    labelhoraI.style.fontWeight = "bold";
 
-    });
+    const modalHoradeInicio = document.createElement("input");
+    modalHoradeInicio.setAttribute("type", "datetime-local");
 
-    btnUpdate.addEventListener('click', () => {
+    const labelhoraF = document.createElement("label");
+    labelhoraF.textContent = "FIN TAREA";
+    labelhoraF.style.fontWeight = "bold";
+    const modalHoradeFin = document.createElement("input");
+    modalHoradeFin.setAttribute("type", "datetime-local");
 
-        const newTask = prompt(`Ingrese la actualizacio de la tarea ${ task }`);
+    const labelDesc = document.createElement("label");
+    labelDesc.textContent = "Descripción";
+    const addDescription = document.createElement("input");
+    addDescription.setAttribute("type", "text");
+    addDescription.setAttribute("placeholder", "add description");
 
-        if( newTask === '' ){
-            alert('Ingresa un valor correcto');
-            return;
-        }
+    const labelPri = document.createElement("label");
+    labelPri.textContent = "Prioridad";
+    labelPri.style.fontWeight = "bold"
 
-        // actualizar en LocalStorage
+    const desplegable = document.createElement("select");
 
-        const taskToUpdate = task;
+    const alta = document.createElement("option");
+    alta.textContent = "ALTA";
+    alta.style.backgroundColor = "red";
+    const media = document.createElement("option");
+    media.textContent = "MEDIA";
+    media.style.backgroundColor = "yellow";
+    const baja = document.createElement("option");
+    baja.textContent = "BAJA";
+    baja.style.backgroundColor = "green";
 
-        tasks = tasks.map( tarea => tarea === taskToUpdate ? newTask : tarea );
+    const modalFooter = document.createElement("div");
+    modalFooter.classList.add("modal-footer");
 
-        localStorage.setItem('tareas', tasks);
+    // agregar elementos al modal
 
-        title.textContent = newTask;
+    modalHeader.appendChild(modalTitle);
+    modalHeader.appendChild(closeModal);
 
-    });
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(modalBody);
 
-    btnDetails.addEventListener('click', () => {
+    modalBody.appendChild(labelhoraI);
+    modalBody.appendChild(modalHoradeInicio);
+    modalBody.appendChild(labelhoraF);
+    modalBody.appendChild(modalHoradeFin);
+    modalBody.appendChild(labelDesc);
+    modalBody.appendChild(addDescription);
+    modalBody.appendChild(labelPri);
+    modalBody.appendChild(desplegable);
+    desplegable.appendChild(alta);
+    desplegable.appendChild(media);
+    desplegable.appendChild(baja);
 
-        // crear modal con detalles de la tarea
+    modalDialog.appendChild(modalContent);
 
-        const modal = document.createElement('div');
-        modal.classList.add('modal');
-        modal.classList.add('fade');
-        modal.setAttribute('tabindex', '-1');
-        modal.setAttribute('id', `detalleModal_${task}`);
+    modal.appendChild(modalDialog);
 
-        const modalDialog = document.createElement('div');
-        modalDialog.classList.add('modal-dialog');
+    document.body.appendChild(modal);
 
-        const modalContent = document.createElement('div');
-        modalContent.classList.add('modal-content');
+    // abrir modal
 
-        const modalHeader = document.createElement('div');
-        modalHeader.classList.add('modal-header');
-        modalHeader.classList.add('d-flex');
-        modalHeader.classList.add('justify-content-between');
+    const modalInstance = new bootstrap.Modal(modal);
 
-        const modalTitle = document.createElement('h5');
-        modalTitle.textContent = `Detalles de la tarea ${ task }`;
+    modalInstance.show();
+  });
 
-        const closeModal = document.createElement('button');
-        closeModal.textContent = 'Cerrar';
-        closeModal.classList.add('btn');
-        closeModal.classList.add('btn-danger');
 
-        const modalBody = document.createElement('div');
-        modalBody.classList.add('modal-body');
 
-        const modalFooter = document.createElement('div');
-        modalFooter.classList.add('modal-footer');
+  // agregar boton eliminar al li
 
-        // agregar elementos al modal
+  div.appendChild(btnDetails);
+  div.appendChild(btnUpdate);
+  div.appendChild(btnDelete);
 
-        modalHeader.appendChild(modalTitle);
-        modalHeader.appendChild(closeModal);
+  li.appendChild(title);
+  li.appendChild(div);
 
-        modalContent.appendChild(modalHeader);
-        modalContent.appendChild(modalBody);
+  // agregar li a la lista
 
-        modalDialog.appendChild(modalContent);
+  listApp.appendChild(li);
 
-        modal.appendChild(modalDialog);
+  // almacenar en LocalStorage
 
-        document.body.appendChild(modal);
+  tasks.push(task);
+  localStorage.setItem("tareas", tasks);
 
-        // abrir modal
+  // limpiar input
 
-        const modalInstance = new bootstrap.Modal(modal);
-        
-        modalInstance.show();
-    });
-
-    // agregar boton eliminar al li
-
-    div.appendChild(btnDetails);
-    div.appendChild(btnUpdate);
-    div.appendChild(btnDelete);
-
-    li.appendChild(title);
-    li.appendChild(div);
-
-    // agregar li a la lista
-
-    listApp.appendChild(li);
-
-    // almacenar en LocalStorage
-
-    tasks.push(task);
-    localStorage.setItem('tareas', tasks);
-
-    // limpiar input
-
-    input.value = '';
-
-}
+  input.value = "";
+};
 
 // validar input
-input.addEventListener('keyup', (event) => {
+input.addEventListener("keyup", (event) => {
+  event.preventDefault();
 
-    event.preventDefault();
+  if (event.key === "Enter") {
+    addTask(input.value);
+  }
 
-    if( event.key === 'Enter' ){
-        addTask( input.value );
-    }
+  // validaciones de input no caracteres especiales
 
-    // validaciones de input no caracteres especiales
+  const regex = /^[a-zA-Z0-9\s]*$/;
+  const value = input.value;
 
-    const regex = /^[a-zA-Z0-9\s]*$/;
-    const value = input.value;
-
-    if( !regex.test(value) ){
-        input.value = value.slice(0, -1);
-    }
-
-
+  if (!regex.test(value)) {
+    input.value = value.slice(0, -1);
+  }
 });
 
 // evento click en boton agregar
 
-buttonAdd.addEventListener('click', () => {
+buttonAdd.addEventListener("click", () => {
+  if (input.value === "") {
+    alert("Ingresa una tarea correcta");
+    return;
+  }
 
-    if( input.value === '' ){
-        alert('Ingresa una tarea correcta')
-        return;
-    }
-    
-    addTask( input.value );
-
+  addTask(input.value);
 });
+
+
+  // cerrar modal
+
+  const closeModal =  document.querySelector("btn btn-danger")
+   const modalContainer = document.querySlelector (".modal fade show")
+  closeModal.addEventListener("click", ()=>{
+    modalContainer.style.display ="none"
+  } )
