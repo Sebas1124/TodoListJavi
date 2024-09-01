@@ -205,8 +205,13 @@ const addTask = (valueInput) => {
     document.body.appendChild(modal);
 
     // abrir modal
+      // cerrar modal
 
-    const modalInstance = new bootstrap.Modal(modal);
+ const modalInstance = new bootstrap.Modal(modal);
+       
+  closeModal.addEventListener("click", ()=>{
+    modalInstance.hide();
+  } )
 
     modalInstance.show();
   });
@@ -266,10 +271,4 @@ buttonAdd.addEventListener("click", () => {
 });
 
 
-  // cerrar modal
 
-  const closeModal =  document.querySelector("btn btn-danger")
-   const modalContainer = document.querySlelector (".modal fade show")
-  closeModal.addEventListener("click", ()=>{
-    modalContainer.style.display ="none"
-  } )
