@@ -15,35 +15,107 @@
             padding-top: 100px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: start;
             align-items: center;
             height: 100vh;
         }
-        .input{
-            width: 300px;
-            display: flex;justify-content: space-evenly;
+        .toDo{
+            border: 1px solid black;
+            width: 80%;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .toDo h1{
+            text-align: center;
+        }
+        .toDo .input{
+           
+          display: flex;
+          justify-content: space-around;
+         
+        }
+        .input input{
+            width: 400px;
         }
         .input button{
             border-radius: 20px;
+            margin-left: 20px;
+            width: 90px;
+
         }
-        #modal input{
-            margin: 12px;
+
+        .taskContainer{
+            width: 80%;
+            padding-top: 3%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
+
+        .tareas{
+            margin: 6px;
+            width: 500px;
+            display: flex;
+            justify-content: space-around;
+            border:1px solid black,
+        }
+
+        .tareas p{
+            text-wrap: wrap;
+        }
+        .tareas  .detalles{
+         
+            padding:6px;
+            background-color: yellow;
+            border: 1px solid rgb(97, 97, 17);
+       }
+        .tareas  .modificar{
+         
+            padding:6px;
+            background-color: rgb(25, 185, 17);
+            border: 1px solid rgb(97, 97, 17);
+       }
+        .tareas  .eliminar{
+         
+            padding:6px;
+            background-color: rgb(206, 16, 16);
+            border: 1px solid rgb(97, 97, 17);
+       }
+
+       .modalDetalle{
+        position: absolute;
+   
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding:30px ;
+        width: 70%;
+        height: 50%;
+        background-color: grey;
+       }
+
+      
     </style>
 </head>
 <body>
-    <h1>ToDo List</h1>
-    <div class="input">
-        <input type="text">
-        <button>ADD</button>
-    </div>
 
+    <main  class="toDo">
+        <h1>ToDo List</h1>
+        <div class="input">
+            <input type="text" name="" id="">
+            <button>ADD</button>
+        </div>
+       
+        <div class="taskContainer">
+
+        </div>
+    </main>
     
 
- 
-  
-    
-<script src="assets/app.js"> </script>
+ <script src="assets/app.js"> </script>
   
 </body>
 </html>
