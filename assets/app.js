@@ -6,6 +6,7 @@ const taskContainer = document.querySelector(".taskContainer")
 
 let id = 0
 taskList = []
+
 addTask.addEventListener("click", ()=>{
 
 const nuevaTarea = input.value
@@ -15,7 +16,6 @@ if(!regex.test(nuevaTarea) || nuevaTarea == ""){
     alert("solo caracteres alfabéticos")
    return
 }
-
 
 id++
 const newTask = document.createElement("div")
