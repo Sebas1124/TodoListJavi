@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const detallesTask = document.querySelectorAll(".details")
 
+      // --------------------------------------------
       detallesTask.forEach((btnDetalle)=>{
 
         btnDetalle.addEventListener("click",()=>{
@@ -93,6 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
           
       })
+
+      // -------------------------------------------------------
 
     })
   }
