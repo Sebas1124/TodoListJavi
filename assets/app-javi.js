@@ -138,7 +138,7 @@ addTask.addEventListener("click", () => {
 
   // console.log({
   //   tasks,
-  //   stringiFy: JSON.stringify(tasks)
+  //   stringify: JSON.stringify(tasks)
   // })
 
   // METODO PARSE
